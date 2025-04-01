@@ -26,7 +26,7 @@ def getLPInstance(fileName : str) -> Optional[LPInstance]:
     with open(fileName,"r") as fl:
       numCustomers,numFacilities = [int(i) for i in fl.readline().split()]
       numMaxVehiclePerFacility = numCustomers 
-      print(f"numCustomers: {numCustomers} numFacilities: {numFacilities} numVehicle: {numMaxVehiclePerFacility}")
+      # print(f"numCustomers: {numCustomers} numFacilities: {numFacilities} numVehicle: {numMaxVehiclePerFacility}")
       allocCostCF = np.zeros((numCustomers,numFacilities))
        
 
@@ -79,7 +79,49 @@ class LPSolver:
      self.model = Model() #CPLEX solver
 
   def solve(self):
-     pass 
+    
+    # # debugging information
+    # print("demand: ", self.lpinst.demandC)
+    # print("capacity: ", self.lpinst.capacityF)
+
+    # each facility to each customer -> how much demand satisfied by facility f for customer c
+    x = [self.model.continuous_var_list(self.lpinst.numCustomers, 0, 1) for _ in range(self.lpinst.numFacilities)]
+
+    # constraints
+    for f in range(self.lpinst.numFacilities):
+      self.model.add_constraint(
+        self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) == self.lpinst.capacityF[f],
+        ctname=f"CapacityConstraint_F{f}"
+      )
+    
+    # cost minimization
+    total_cost = self.model.sum( # opening facility cost
+      self.lpinst.openingCostF[f] * self.model.max(x[f]) for f in range(self.lpinst.numFacilities)
+    ) + self.model.sum( # allocation cost
+      self.model.scal_prod(terms=x[f], coefs=self.lpinst.allocCostCF[:,f]) for f in range(self.lpinst.numFacilities)
+    ) + self.model.sum( # truck usage cost
+      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)      
+    )
+    self.model.minimize(total_cost)
+
+    # solve and return output
+    if sol:=self.model.solve():
+
+      # # debugging information
+      # print("solution found")
+      # self.model.print_information()
+
+      # TODO: visualize solution
+
+      return self.model.objective_value
+    else: return None
+
+    # NOTE:
+      # current model cannot handle the number of constraints?
+      # do we need to reduce this number somehow?
+      # is there something wrong with how things are being handled?
+      # should we enforce some kind of thing here?
+    
   
 
 def dietProblem():

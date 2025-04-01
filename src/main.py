@@ -9,7 +9,7 @@ import json
 
 
 def main(args):
-    dietProblem()
+    # dietProblem()
 
     filename = Path(args.input_file).name
     timer = Timer()
@@ -21,7 +21,7 @@ def main(args):
     printSol = {
         "Instance" : filename,
         "Time" : timer.getElapsed(),
-        "Result" : 0 , 
+        "Result" : sol, 
         "Solution" : "OPT"
     }
 

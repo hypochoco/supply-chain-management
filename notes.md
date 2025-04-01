@@ -1,0 +1,3 @@
+
+Solve a minimization problem 
+1. ... 
