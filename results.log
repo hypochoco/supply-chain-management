@@ -1,11 +1,11 @@
-{"Instance": "C10_40_100.scm", "Time": 0.0849, "Result": 14564.905117780494, "Solution": "OPT"}
-{"Instance": "C10_50_300.scm", "Time": 0.1046, "Result": 20498.73544711546, "Solution": "OPT"}
+{"Instance": "C10_40_100.scm", "Time": 0.1, "Result": 14564.91, "Solution": "OPT"}
+{"Instance": "C10_50_300.scm", "Time": 0.09, "Result": 20498.74, "Solution": "OPT"}
 {"Instance": "C18_100_150.scm", "Time": "--", "Result": "--"}
 {"Instance": "C18_40_80.scm", "Time": "--", "Result": "--"}
-{"Instance": "C1_40_150.scm", "Time": 0.0561, "Result": 5156.706778290658, "Solution": "OPT"}
-{"Instance": "C1_50_100.scm", "Time": 0.0462, "Result": 3798.1513968222325, "Solution": "OPT"}
+{"Instance": "C1_40_150.scm", "Time": 0.1, "Result": 5156.71, "Solution": "OPT"}
+{"Instance": "C1_50_100.scm", "Time": 0.07, "Result": 3798.15, "Solution": "OPT"}
 {"Instance": "R18_100_100.scm", "Time": "--", "Result": "--"}
 {"Instance": "R18_50_300.scm", "Time": "--", "Result": "--"}
-{"Instance": "R1_100_50.scm", "Time": 0.0581, "Result": 2750.3646129255053, "Solution": "OPT"}
-{"Instance": "R1_40_100.scm", "Time": 0.0549, "Result": 5003.7841720107535, "Solution": "OPT"}
-{"Instance": "R1_40_50.scm", "Time": 0.058, "Result": 3644.855529412687, "Solution": "OPT"}
+{"Instance": "R1_100_50.scm", "Time": 0.06, "Result": 2750.36, "Solution": "OPT"}
+{"Instance": "R1_40_100.scm", "Time": 0.06, "Result": 5003.78, "Solution": "OPT"}
+{"Instance": "R1_40_50.scm", "Time": 0.07, "Result": 3644.86, "Solution": "OPT"}
