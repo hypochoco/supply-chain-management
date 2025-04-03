@@ -100,7 +100,7 @@ class LPSolver:
       self.model.add_constraint(self.model.scal_prod(terms=x[f], coefs=self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit <= self.lpinst.numMaxVehiclePerFacility)
 
     # cost minimization
-    total_cost = self.model.sum(
+    total_cost = self.model.sum( # facility opening cost
       self.lpinst.openingCostF[f] * self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) / self.lpinst.capacityF[f] for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # allocation cost
       self.model.scal_prod(terms=x[f], coefs=self.lpinst.allocCostCF[:,f]) for f in range(self.lpinst.numFacilities)
