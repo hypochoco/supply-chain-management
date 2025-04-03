@@ -97,7 +97,7 @@ class LPSolver:
         ctname=f"CapacityConstraint_F{f}"
       )
     for f in range(self.lpinst.numFacilities): # max truck constraint
-      self.model.add_constraint(self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit <= self.lpinst.numMaxVehiclePerFacility)
+      self.model.add_constraint(self.model.scal_prod(terms=x[f], coefs=self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit <= self.lpinst.numMaxVehiclePerFacility)
 
     # cost minimization
     total_cost = self.model.sum(
@@ -105,7 +105,7 @@ class LPSolver:
     ) + self.model.sum( # allocation cost
       self.model.scal_prod(terms=x[f], coefs=self.lpinst.allocCostCF[:,f]) for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # truck usage cost
-      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)
+      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)
     )
     self.model.minimize(total_cost)
 
