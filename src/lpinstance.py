@@ -89,27 +89,28 @@ class LPSolver:
     x = [self.model.continuous_var_list(self.lpinst.numCustomers, 0, 1) for _ in range(self.lpinst.numFacilities)]
 
     # constraints
-    for c in range(self.lpinst.numCustomers): # demand satisfied 
+    for c in range(self.lpinst.numCustomers): # demand satisfied
       self.model.add_constraint(self.model.sum(x[f][c] for f in range(self.lpinst.numFacilities)) == 1)
     for f in range(self.lpinst.numFacilities): # less than facility capacity
-      self.model.add_constraint( 
+      self.model.add_constraint(
         self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) <= self.lpinst.capacityF[f],
         ctname=f"CapacityConstraint_F{f}"
       )
-  
+    for f in range(self.lpinst.numFacilities): # max truck constraint
+      self.model.add_constraint(self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit <= self.lpinst.numMaxVehiclePerFacility)
+
     # cost minimization
-
-    # find a way to do this calculation without the max function... 
-    # simplify this a litle... 
-
-    total_cost = self.model.sum( # opening facility cost
-      self.lpinst.openingCostF[f] * self.model.max(x[f]) for f in range(self.lpinst.numFacilities)
+    total_cost = self.model.sum(
+      self.lpinst.openingCostF[f] * self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) / self.lpinst.capacityF[f] for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # allocation cost
       self.model.scal_prod(terms=x[f], coefs=self.lpinst.allocCostCF[:,f]) for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # truck usage cost
-      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)      
+      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)
     )
     self.model.minimize(total_cost)
+
+    # # debugging information
+    # self.model.print_information()
 
     # solve and return output
     if sol:=self.model.solve(): # solution found -> TODO: visualization
