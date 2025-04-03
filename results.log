@@ -1,11 +1,11 @@
-{"Instance": "C10_40_100.scm", "Time": 0.1, "Result": 14564.91, "Solution": "OPT"}
-{"Instance": "C10_50_300.scm", "Time": 0.09, "Result": 20498.74, "Solution": "OPT"}
-{"Instance": "C18_100_150.scm", "Time": "--", "Result": "--"}
-{"Instance": "C18_40_80.scm", "Time": "--", "Result": "--"}
-{"Instance": "C1_40_150.scm", "Time": 0.1, "Result": 5156.71, "Solution": "OPT"}
-{"Instance": "C1_50_100.scm", "Time": 0.07, "Result": 3798.15, "Solution": "OPT"}
-{"Instance": "R18_100_100.scm", "Time": "--", "Result": "--"}
-{"Instance": "R18_50_300.scm", "Time": "--", "Result": "--"}
-{"Instance": "R1_100_50.scm", "Time": 0.06, "Result": 2750.36, "Solution": "OPT"}
-{"Instance": "R1_40_100.scm", "Time": 0.06, "Result": 5003.78, "Solution": "OPT"}
-{"Instance": "R1_40_50.scm", "Time": 0.07, "Result": 3644.86, "Solution": "OPT"}
+{"Instance": "C10_40_100.scm", "Time": 0.02, "Result": 15895, "Solution": "OPT"}
+{"Instance": "C10_50_300.scm", "Time": 0.02, "Result": 19694, "Solution": "OPT"}
+{"Instance": "C18_100_150.scm", "Time": 0.03, "Result": 11514, "Solution": "OPT"}
+{"Instance": "C18_40_80.scm", "Time": 0.03, "Result": 12200, "Solution": "OPT"}
+{"Instance": "C1_40_150.scm", "Time": 0.02, "Result": 3707, "Solution": "OPT"}
+{"Instance": "C1_50_100.scm", "Time": 0.02, "Result": 2556, "Solution": "OPT"}
+{"Instance": "R18_100_100.scm", "Time": 0.03, "Result": 11324, "Solution": "OPT"}
+{"Instance": "R18_50_300.scm", "Time": 0.03, "Result": 17832, "Solution": "OPT"}
+{"Instance": "R1_100_50.scm", "Time": 0.02, "Result": 1816, "Solution": "OPT"}
+{"Instance": "R1_40_100.scm", "Time": 0.03, "Result": 3584, "Solution": "OPT"}
+{"Instance": "R1_40_50.scm", "Time": 0.02, "Result": 2573, "Solution": "OPT"}
