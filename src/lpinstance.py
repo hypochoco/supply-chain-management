@@ -81,6 +81,7 @@ class LPSolver:
   def solve(self):
     
     # # debugging information
+    print("num customers: ", self.lpinst.numCustomers, "\nnum facilities: ", self.lpinst.numFacilities, "\nmax vehicles per f: ", self.lpinst.numMaxVehiclePerFacility)
     # print("demand: ", self.lpinst.demandC)
     # print("capacity: ", self.lpinst.capacityF)
 
@@ -88,40 +89,32 @@ class LPSolver:
     x = [self.model.continuous_var_list(self.lpinst.numCustomers, 0, 1) for _ in range(self.lpinst.numFacilities)]
 
     # constraints
-    for f in range(self.lpinst.numFacilities):
-      self.model.add_constraint(
-        self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) == self.lpinst.capacityF[f],
+    for c in range(self.lpinst.numCustomers): # demand satisfied 
+      self.model.add_constraint(self.model.sum(x[f][c] for f in range(self.lpinst.numFacilities)) == 1)
+    for f in range(self.lpinst.numFacilities): # less than facility capacity
+      self.model.add_constraint( 
+        self.model.scal_prod(terms=x[f], coefs=self.lpinst.demandC) <= self.lpinst.capacityF[f],
         ctname=f"CapacityConstraint_F{f}"
       )
-    
+  
     # cost minimization
+
+    # find a way to do this calculation without the max function... 
+    # simplify this a litle... 
+
     total_cost = self.model.sum( # opening facility cost
       self.lpinst.openingCostF[f] * self.model.max(x[f]) for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # allocation cost
       self.model.scal_prod(terms=x[f], coefs=self.lpinst.allocCostCF[:,f]) for f in range(self.lpinst.numFacilities)
     ) + self.model.sum( # truck usage cost
-      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)      
+      self.lpinst.truckUsageCost * self.model.scal_prod(terms=x[f], coefs=2 * self.lpinst.distanceCF[:,f]) / self.lpinst.truckDistLimit for f in range(self.lpinst.numFacilities)      
     )
     self.model.minimize(total_cost)
 
     # solve and return output
-    if sol:=self.model.solve():
-
-      # # debugging information
-      # print("solution found")
-      # self.model.print_information()
-
-      # TODO: visualize solution
-
+    if sol:=self.model.solve(): # solution found -> TODO: visualization
       return self.model.objective_value
-    else: return None
-
-    # NOTE:
-      # current model cannot handle the number of constraints?
-      # do we need to reduce this number somehow?
-      # is there something wrong with how things are being handled?
-      # should we enforce some kind of thing here?
-    
+    else: return -1 # no solution
   
 
 def dietProblem():
@@ -136,6 +129,8 @@ def dietProblem():
     m.add_constraint(m.scal_prod(terms=mvars,coefs=[150,200]) >= 600) # Protein
 
     m.minimize(m.scal_prod(terms=mvars,coefs=[25,15]))
+
+    m.print_information()
 
     sol  = m.solve()
     obj_value = math.ceil(m.objective_value) 
